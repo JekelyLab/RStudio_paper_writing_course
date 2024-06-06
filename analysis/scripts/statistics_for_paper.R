@@ -30,6 +30,7 @@ data_Ashwini_sel <- data_Ashwini %>%
   select(1:6) %>%
   janitor::clean_names()
 
+# some interesting stuff here
 data_Ashwini_sel_M_SD <- data_Ashwini_sel %>%
   group_by(gene) %>%
   mutate(mean2dct = mean(x2_dct)) %>%
