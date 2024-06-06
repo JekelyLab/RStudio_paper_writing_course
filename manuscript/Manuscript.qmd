@@ -39,6 +39,8 @@ csl: elife.csl #change according to journal
 
 Here is our abstract. We discovered that medaka fish can eat Arabidpopsis shoop apical meristeme cells to regulate energy metabolism (data not shown).
 
+Test edit GJ 1.
+
 **text in bold** *italic* [underline]{.underline}
 
 # Introduction
@@ -48,6 +50,8 @@ You can add references either by referring to their id in the .bib file e.g., [@
 It is now a test to edit the text and see how the changes show up on GitHub.
 
 Test of git show.
+
+Test edit GJ 2.
 
 In the visual editor mode, go to 'Insert' -\> \@ Citation
 
@@ -66,6 +70,8 @@ curl -LH "Accept: application/x-bibtex" https://doi.org/10.7554/eLife.91258.1 >>
 
 The references are stored in manuscript/references.bib (need to be defined in the Yaml header). This file will automatically updated when you insert a new reference through the Visual editor \> Insert \> Citations.
 
+Test edit GJ 3.
+
 [@ozpolat2021][@Wu2020; @Saile2023; @Lohmann2023][@lohmann2001]
 
 In this documents, references will be formatted in the style of eLife. This is defined in the Yaml header under: csl: elife.csl. The elife.csl file is saved in the /manuscript folder.
@@ -75,6 +81,7 @@ If you would like to use a different citation format, download the respective .c
 ## Results
 
 Inserting Figures <!--# I don't agree here -->
+Test edit GJ 4.
 
 Test comment here. <!--# Hi -->
 
@@ -102,6 +109,8 @@ knitr::include_graphics("figures/Figure_complex.png")
 ## Equations
 
 Equations can also be inserted, Insert -\> Display Math:
+
+Test edit GJ 5.
 
 $$
 \bar{X} = \frac{\sum_{i=1}^{n} x_{i}}{n}
