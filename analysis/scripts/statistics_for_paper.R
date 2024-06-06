@@ -42,4 +42,4 @@ Nanog_mean <- data_Ashwini_sel_M_SD %>%
   format(scientific = FALSE, big.mark = ",", digits = 3)
 Nanog_mean
 
-
+# we need more cool code here
