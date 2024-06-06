@@ -49,7 +49,7 @@ You can add references either by referring to their id in the .bib file e.g., [@
 
 It is now a test to edit the text and see how the changes show up on GitHub.
 
-Test of git show.
+Test of git show. And another test.
 
 Test edit GJ 2.
 
@@ -66,7 +66,7 @@ The easiest way is to use the command line:
 curl -LH "Accept: application/x-bibtex" https://doi.org/10.7554/eLife.91258.1 >> references.bib
 ```
 
-*Platynereis dumerilii* is a marine annelid... [@ozpolat2021]. It is also the coolest model organism.
+*Platynereis dumerilii* is a marine annelid... [@ozpolat2021]. It is also the coolest model organism. It lives in shallow sea on seagrass. Ischia is a good campling location.
 
 The references are stored in manuscript/references.bib (need to be defined in the Yaml header). This file will automatically updated when you insert a new reference through the Visual editor \> Insert \> Citations.
 
@@ -75,6 +75,7 @@ Test edit GJ 3.
 [@ozpolat2021][@Wu2020; @Saile2023; @Lohmann2023][@lohmann2001]
 
 In this documents, references will be formatted in the style of eLife. This is defined in the Yaml header under: csl: elife.csl. The elife.csl file is saved in the /manuscript folder.
+
 
 If you would like to use a different citation format, download the respective .csl file (e.g., from the Zotero style repository <https://www.zotero.org/styles>), save it in the /manuscript folder of the project and change the Yaml to csl: your_favourite_journal.csl.
 
@@ -132,7 +133,8 @@ If we update the data, the script can recalculate the variable we want to refer 
 
 ## Acknowledgements
 
-We would like to thank the Jekely lab for the R project template (<https://github.com/JekelyLab/new_paper_template>) we used to write this paper. This work was funded by ...
+We would like to thank the [Jekely lab](https://github.com/JekelyLab) for the [R project template](<https://github.com/JekelyLab/new_paper_template>) we used to write this paper. This work was funded by some funding agency.
+We would like to thank all the Platynereis that gave their lives for science.
 
 ## Materials and Methods
 
@@ -142,6 +144,9 @@ Alternatively, you can use the Markdown grid table format. For more complex tabl
 
 The output may differ between html and pdf, for most consistent results use the grid table format described [here](https://quarto.org/docs/authoring/tables.html).
 
+
+
+
 **Key Resources Table**
 
 ```{r tt, echo=FALSE, eval=TRUE}
@@ -149,8 +154,9 @@ The output may differ between html and pdf, for most consistent results use the 
 
 library(readxl)
 library(tinytable)
+library(readxl)
 
-#read data
+# read data
 resources_table <- readxl::read_xls("../analysis/data/Key_resource_table.xls")
 
 tt(resources_table, theme = "grid", width = 1, placement = "H") 
@@ -161,6 +167,7 @@ tt(resources_table, theme = "grid", width = 1, placement = "H")
 |------|------|------|------|------|
 | a    | b    | c    | d    | e    |
 | d    |      |      |      |      |
+| v    | n    | f    |      | f    |
 
 : Grid Table example {tbl-colwidths="\[10,20,20,20,30\]"}
 
