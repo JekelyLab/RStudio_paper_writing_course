@@ -41,3 +41,5 @@ Nanog_mean <- data_Ashwini_sel_M_SD %>%
   pull() %>% unique() %>%
   format(scientific = FALSE, big.mark = ",", digits = 3)
 Nanog_mean
+
+
