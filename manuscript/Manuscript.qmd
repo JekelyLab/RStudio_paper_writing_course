@@ -33,11 +33,6 @@ bibliography: references.bib #add bibliography in this file
 csl: elife.csl #change according to journal
 ---
 
-```{r include=FALSE}
-source("../analysis/scripts/statistics_for_paper.R")
-
-```
-
 # Abstract
 
 [This]{.underline} is an R **Markdown** *document.* ^Markdown^ is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
@@ -69,6 +64,8 @@ curl -LH "Accept: application/x-bibtex" https://doi.org/10.7554/eLife.91258.1 >>
 
 The references are stored in manuscript/references.bib (need to be defined in the Yaml header). This file will automatically updated when you insert a new reference through the Visual editor \> Insert \> Citations.
 
+[@ozpolat2021][@Wu2020; @Saile2023; @Lohmann2023][@lohmann2001]
+
 In this documents, references will be formatted in the style of eLife. This is defined in the Yaml header under: csl: elife.csl. The elife.csl file is saved in the /manuscript folder.
 
 If you would like to use a different citation format, download the respective .csl file (e.g., from the Zotero style repository <https://www.zotero.org/styles>), save it in the /manuscript folder of the project and change the Yaml to csl: your_favourite_journal.csl.
@@ -95,6 +92,7 @@ knitr::include_graphics("figures/Figure1.png")
 
 ```{r, out.width = "100%", fig.cap="**Figure 1. Our nice figure from yesterday** (A) A nice picture. (B) legend.  (C) <br> (D) " }
 #| echo: false 
+#| warning: false
 
 knitr::include_graphics("figures/Figure_complex.png")
 ```
