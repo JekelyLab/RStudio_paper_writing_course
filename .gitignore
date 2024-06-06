@@ -39,4 +39,4 @@ vignettes/*.pdf
 .Renviron
 
 # ms pdf file
-/manuscript/*.pdf
+manuscript/*.pdf

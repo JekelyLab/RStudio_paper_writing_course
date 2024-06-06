@@ -211,7 +211,7 @@ tt(
 - we use a https://github.com/hypothesis/client script that is sourced at the end of the quarto file by \<script src="hypothes.is/embed.js" async></script> to make this work
 
 ::: callout-warning
-- if you re-render the html and overwrite the shared file, the comments will be gone
+- you need to host the html on a website for sharing
 :::
 
 ## Publication - GitHub and Zenodo integration
