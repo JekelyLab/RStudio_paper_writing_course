@@ -62,7 +62,7 @@ The easiest way is to use the command line:
 curl -LH "Accept: application/x-bibtex" https://doi.org/10.7554/eLife.91258.1 >> references.bib
 ```
 
-*Platynereis dumerilii* is a marine annelid... [@ozpolat2021]
+*Platynereis dumerilii* is a marine annelid... [@ozpolat2021]. It is also the coolest model organism.
 
 The references are stored in manuscript/references.bib (need to be defined in the Yaml header). This file will automatically updated when you insert a new reference through the Visual editor \> Insert \> Citations.
 
