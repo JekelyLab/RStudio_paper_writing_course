@@ -19,7 +19,6 @@ library(magick)
 library(janitor)
 library(tinytable)
 library(rio)
-
 # define some colour-blind-friendly colour palettes --------------
 #From Color Universal Design (CUD): https://jfly.uni-koeln.de/color/
 Okabe_Ito <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", 

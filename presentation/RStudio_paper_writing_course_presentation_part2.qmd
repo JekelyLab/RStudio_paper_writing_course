@@ -1,0 +1,28 @@
+---
+title: "Rstudio in Data Science and Paper Writing"
+subtitle: "Part 2"
+author: "Gáspár Jékely"
+format:
+  revealjs: 
+    theme: [default, custom.scss]
+    slide-number: false
+    code-fold: false
+    code-summary: "Code"
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+scrollable: true
+---
+
+## Course program
+
+<br>
+- **Section 1**: Why open science? Project management, data import, tidy data
+- **Section 2**: Plotting, figure assembly
+- **Section 3**: Manuscript writing, tables, references, data and figure embedding
+- **Section 4**: GitHub, collaboration, sharing, version control
+
+```{r eval=TRUE, echo=FALSE}
+source("../analysis/scripts/packages_and_functions.R")
+```
+
