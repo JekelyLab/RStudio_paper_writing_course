@@ -1,6 +1,6 @@
 ---
 title: "Rstudio in Data Science and Paper Writing"
-author: "Gáspár Jékely"
+author: "Gáspár Jékely <br> Centre for Organismal Studies, Heidelberg University"
 format:
   revealjs: 
     theme: [default, custom.scss]
@@ -106,7 +106,7 @@ https://rstudio-education.github.io/tidyverse-cookbook/
 
 ## Current state of scholarly digital infrastructure and knowhow
 
-<img src=https://media1.tenor.com/images/f6362876996697b6a6f554b2ac3d3013/tenor.gif?itemid=10488408 width=200>
+<img src=https://media1.tenor.com/images/f6362876996697b6a6f554b2ac3d3013/tenor.gif?itemid=10488408 width=160>
 
 
 ## What this course is about: what you can do to be open
@@ -143,6 +143,9 @@ https://rstudio-education.github.io/tidyverse-cookbook/
 - navigate to: https://github.com/JekelyLab/RStudio_paper_writing_course
 - fork the repository to your GitHub (if you have an account already)
 - go to RStudio -> New Project -> Git -> your repo's address (or my address)
+- select local dir and download the project with all directories to your computer
+- let's check the project
+- you can rename the .Rproject file to 'my favourite file name'
 - open /analysis/scripts/Course_exercises.R
 
 ## Rule nr. 1 -- relative working directories
@@ -159,12 +162,36 @@ getwd()
 
 - Do not use setwd() to set your working dir
 
+## Use R projects (.Rproj)
+
+<br>
+
 -   Keep all files associated with a project together — input data, R scripts, analytical results, figures. This is such a wise and common practice that RStudio has built-in support for this via **Rprojects**.
 
 -   If you create a new Rproject, your working dir will in general be where you save the new project
 
--   Whenever you refer to a file with a relative path it will look for it in your wd.
+-   Whenever you refer to a file with a relative path it will look for it in your working dir.
 
+- in case you used setwd() in a script (you should not) you can find your Rproject directory with here()
+
+```{r, eval=TRUE, echo=TRUE}
+here::here()
+
+#test, but you should not do this
+setwd("~")
+getwd()
+
+#get back to Rproj dir
+setwd(here::here())
+getwd()
+# all good again
+```
+
+## Use R projects (.Rproj)
+
+<br>
+
+- list files in your working dir 
 
 ```{r, eval=TRUE, echo=TRUE}
 #| code-fold: false
@@ -174,7 +201,7 @@ list.files()
 
 ## Project management
 
-<br>
+<br><br><br>
 
 * Use folders relative to your main .Rproject file (e.g. My_next_report.Rproject)
 
@@ -182,17 +209,7 @@ list.files()
 
 * Can be ensured if you always use the same project template
 
-* We will use https://github.com/JekelyLab/RStudio_paper_writing_course
-
-* Go to github and clone the project to your account ("Use this template")
-
-* Go to RStudio -> new project -> version control -> git -> git URL of your new project
-
-* select local dir and download the project with all directories to your computer
-
-* let's check the project
-
-* you can rename the .Rproject file to 'my favourite file name'
+* Check the folder structure in the downloaded project template
 
 ## Installing packages
 
@@ -240,8 +257,17 @@ readxl::read_excel("../analysis/data/data - José - March 2024.xlsx")
 ```
 :::
 
+## Save and share your computer environment and packages
 
-## rio: A Swiss-Army Knife for Data I/O  
+```{r echo=TRUE, eval=TRUE}
+#save session info and Rstudio version info for reproducibility
+sessionInfo()
+writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
+```
+
+
+
+## File import and saving -- rio: A Swiss-Army Knife for Data I/O  
 
 - import xlsx, csv, tsv and many other formats with the same command
 
@@ -275,14 +301,6 @@ rio::convert("../analysis/data/data - José - March 2024.xlsx",
 ::: aside
 [Documentation of the rio package](http://gesistsa.github.io/rio/)
 :::
-
-## Save and share your computer environment and packages
-
-```{r echo=TRUE, eval=TRUE}
-#save session info and Rstudio version info for reproducibility
-sessionInfo()
-writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
-```
 
 
 ## Read and preview data 1
@@ -440,7 +458,7 @@ tb_syn <- data_Syn_clean |>
 
 <br>
 
-- once your data have been tidied up, plotting works like a charm
+- once your data have been tidied up, plotting is a lot easier
 - use ggplot2 and a tibble as input
 - ggplot2 is part of tidyverse and loads when you load tidyverse
 - very versatile and extendable data visualisation package
@@ -466,6 +484,26 @@ iris %>%
   theme_minimal()
 
 ```
+
+## Faceting
+
+<br>
+
+- Faceting means spreading the data across different panels
+
+- Need to define 'facets', a set of variables or expressions quoted by vars() defining faceting groups
+
+```{r eval = TRUE, echo = TRUE, fig.height = 4}
+iris %>%  
+  ggplot(aes(
+    x = Petal.Length, y = Sepal.Width, 
+    color = Species, size = Sepal.Width, shape = Species) 
+    ) +
+  geom_point(alpha = 0.5) +
+  facet_wrap(vars(Species))
+```
+
+
 
 ## Resources
 
@@ -512,7 +550,7 @@ plot_Jose2
 
 - you can also use python, bash etc in code blocks
 
-```{python}
+```{python, echo=TRUE}
 import matplotlib
 print(matplotlib.__version__)
 ```
@@ -582,6 +620,20 @@ head(data_Anchel)
 glimpse(data_Anchel)
 str(data_Anchel)
 summary(data_Anchel)
+```
+
+# Add significance values of stats
+
+```{r}
+#| eval=TRUE, echo=TRUE
+
+plot_Ashwini_ct +
+  stat_compare_means(
+    aes(label = after_stat(p.format)),
+    method = "wilcox.test",
+    #ref.group = "Foxg1"
+    comparisons = list( c("GAPDH", "Nanog"), c("GAPDH", "oct4"), c("GAPDH", "pax6") )
+    )
 ```
 
 
@@ -699,7 +751,6 @@ ggsave(
 
 img1 <- readPNG("../analysis/pictures/plot_Jose1a.png")
 img2 <- readPNG("../analysis/pictures/plot_Jose1b.png")
-
 panel_JoseA <- ggdraw() + draw_image(img1)
 panel_JoseB <- ggdraw() + draw_image(img2)
 
@@ -715,15 +766,22 @@ Figure_Jose <- panel_JoseA + panel_JoseB + plot_Jose1 + plot_Jose2 +
   theme(plot.tag = element_text(size = 12, face='plain'))
 
 #save figure as png and pdf
-ggsave("../manuscript/figures/Figure_Jose.png", limitsize = FALSE, 
-       units = c("px"), Figure_Jose, width = 4000, height = 2000,
-       bg = "white")
+ggsave(
+  "../manuscript/figures/Figure_Jose.png", limitsize = FALSE, 
+  units = c("px"), Figure_Jose, width = 4000, height = 2000, bg = "white"
+  )
+ggsave(
+  "../manuscript/figures/Figure_Jose.pdf", limitsize = FALSE, 
+  units = c("px"), Figure_Jose, width = 3000, height = 1600
+  )
+```
 
-ggsave("../manuscript/figures/Figure_Jose.pdf", limitsize = FALSE, 
-       units = c("px"), Figure_Jose, width = 3000, height = 1600)
+```{r}
+#| echo=FALSE, eval=TRUE
 
 image_read("../manuscript/figures/Figure_Jose.png")
 ```
+
 
 
 ## Annotating a ggplot object
@@ -763,7 +821,12 @@ panel_INNOS <- ggdraw() +
                lineend = "butt",
                linejoin = "mitre",
                arrow.fill = "black", size = 0.2)
+```
 
+## Annotating an image
+
+```{r}
+#| echo=TRUE, eval=TRUE
 #define layout
 layout <- "AB"
 
@@ -782,15 +845,17 @@ ggsave(
   )
 
 #save figure as pdf
-ggsave("../manuscript/figures/Figure_IHC.pdf", limitsize = FALSE, 
-       units = c("px"), Figure_INNOS, width = 3000, height = 1000)
-
-image_read("../manuscript/figures/Figure_IHC.png")
-#img
-
-
+ggsave(
+  "../manuscript/figures/Figure_IHC.pdf", limitsize = FALSE, 
+  units = c("px"), Figure_INNOS, width = 3000, height = 1000
+  )
 ```
 
+```{r}
+#| echo=FALSE, eval=TRUE
+
+image_read("../manuscript/figures/Figure_IHC.png")
+```
 
 
 ## Adding consistent scale bars
@@ -844,10 +909,47 @@ image_read("../manuscript/figures/Figure_scalebars.png")
 image_read("../manuscript/figures/Figure_scalebars.png")
 ```
 
+## Reading tif files, parsing metadata like image scale
+
+```{r}
+#| echo=TRUE, eval=TRUE
+#| 
+img_tif <- magick::image_read("../analysis/pictures/INNOS_synapses.tif")
+img_scale <- image_info(img_tif)$width/as.numeric(str_split(image_info(img_tif)$density, "x")[[1]][1])
+img_scale #not precise
+
+# alternatively use ijtiff
+library(ijtiff)
+img_tif_ij <- ijtiff::read_tags("../analysis/pictures/INNOS_synapses.tif")
+img_scale <- img_tif_ij$frame1$width/img_tif_ij$frame1$x_resolution
+img_scale
+
+panel_INNOS_tif <- ggdraw() + draw_image(img_tif)
+
+Figure_INNOS_with_tif <- plot_syn_ann + panel_INNOS_tif +
+  plot_layout(design = layout, widths = c(2, 1)) +
+  plot_annotation(tag_levels = 'A') & 
+  theme(plot.tag = element_text(size = 12, face='plain'))
+
+#save figure as png
+ggsave(
+  "../manuscript/figures/Figure_INNOS_with_tif.png", limitsize = FALSE,
+  units = c("px"), Figure_INNOS_with_tif, 
+  width = 3000, height = 1000, bg = "white"
+  )
+```
+
+```{r}
+#| echo=FALSE, eval=TRUE
+
+image_read("../manuscript/figures/Figure_INNOS_with_tif.png")
+```
+
+
 
 ## Fine-tuning figure size and gaps
 
-### Excercises
+### Exercises
 
 - save the figure in different sizes 
 - introduce gap with # into layout, also need to define width of gap as say 0.05
@@ -921,6 +1023,12 @@ AAAABBBBDDDD
 EEEFFFGGGHHH
 EEEFFFGGGHHH
 "
+```
+
+## More complex figure layouts
+
+```{r}
+#| echo=TRUE, eval=TRUE
 
 #assemble multipanel figure based on layout
 Figure_complex <- panel_Platy + panel_FVRI +  panel_NOS + 
@@ -937,9 +1045,13 @@ ggsave(
   units = c("px"), Figure_complex, 
   width = 2600, height = 1700, bg = "white"
   )
+```
 
+```{r}
+#| echo=FALSE, eval=TRUE
 image_read("../manuscript/figures/Figure_complex.png")
 ```
+
 
 
 ## Vector graphics and drawings
@@ -975,7 +1087,7 @@ ggsave(
 
 -   Can 'knit' into html, pdf or docx formats
 
--   -\> Open manuscript/Manuscript.qmd\]
+-   -\> Open manuscript/Manuscript.qmd
 
 ## Quarto - Documentation
 
@@ -1004,7 +1116,7 @@ format: html
 #| echo=TRUE, eval=FALSE
 
 ---
-title: "New paper template"
+title: "Paper or report template"
 subtitle: |
   \raggedright  Author 1^1,2,\*^ , Author 2^1,2^, Author 3^3^, Author 4E^4^ \newline<br>^1^Heidelberg University, Centre for Organismal Studies (COS), 69120 Heidelberg, Germany \newline<br>^2^Affiliation 2 \newline<br>^3^Affiliation 3 \newline<br>^4^Affiliation 4\newline<br>  ^\*^Correspondence: xy@cos.uni-heidelberg.de
 mainfont: Arial
@@ -1017,7 +1129,8 @@ crossref:
   fig-title: Figure     # (default is "Figure")
 max-width: 100%
 format:
-  html: default
+  html: 
+    embed-resources: true
   pdf:
     pdf-engine: xelatex
     number-sections: false
@@ -1040,6 +1153,12 @@ csl: elife.csl #change according to journal
 ```
 
 
+## Simple syntax
+
+- [This is]{.underline} 
+- A **Quarto** *document.* 
+- Quarto uses a simple ^Markdown^ formatting syntax for authoring HTML, PDF, and MS Word or .odt documents. - Here is some **text in bold** *italic* [underline]{.underline} and ^superscript^.
+
 
 ## Inserting references
 
@@ -1047,17 +1166,59 @@ csl: elife.csl #change according to journal
 
 -   In Visual mode, go to 'Insert' -\> 'Citation'
 -   search for reference on pubmed etc.
--   'Insert' will add the ref to the bibliograpy.bib file
+-   'Insert' will add the ref to themanuscript/ bibliograpy.bib file (needs to be defined in the Yaml header)
+-   in our doc, references will be formatted in the eLife style (defined in the Yaml header under: csl: elife.csl)
+-   The elife.csl file is saved in the manuscript folder.
+-   For a different format, download the respective .csl file (e.g., from the Zotero style repository <https://www.zotero.org/styles>)
 -   in 'Source' mode, you can directly insert the reference with [@ref_id] (preferred, faster method)
--   add new refs to your .bib file with the command-line command:
+
+## Inserting references
+
+<br>
+
+-   you can also add new refs to your .bib file with the command-line command:
 
 :\$ curl -LH "Accept: application/x-bibtex" https://doi.org/10.7554/eLife.34550 \>\> ./references.bib <br>
 
 ::: callout-warning
 -   need to add references.bib to the YAML header as bibliography: references.bib
 -   also define bibliography style in the YAML with csl: elife.csl #add .csl according to journal
+- if you use the command line, use >> and not > otherwise you will overwrite your file!
 :::
 
+## Inserting figures
+
+<br>
+
+-   we can now insert the figures we generated previously and saved under /manuscript/figures or /manuscript/figure_supplements
+
+-   Figure title and legend can also be edited, as well as width
+
+```{r, out.width = "100%", fig.cap="**Figure 1. A figure** (A) A nice picture. (B) legend.  (C) <br> (D) " }
+#| echo: true 
+
+knitr::include_graphics("../manuscript/figures/Figure1.png")
+```
+
+## Adding equations
+
+<br>
+
+- Equations can also be inserted, Insert -\> Display Math:
+
+$$
+\bar{X} = \frac{\sum_{i=1}^{n} x_{i}}{n}
+$$
+## Sourcing code and working with variable
+
+```{r}
+#| eval: true
+source("../analysis/scripts/statistics_for_paper.R")
+```
+
+-   We can use the 'r variable' syntax to add variables calculated in the sourced code directly to the text
+-   This way if the underlying dataset changes, we just reprocess a calculation and insert the result directly into our manuscript
+- the script is sourced and it runs but the output is not included in the knitted output. But we can access the variables defined in the sourced script simply by adding \` r var_name \` between \` backticks, in this case max_PRC value is `r max_PRC` (now this number comes from our sourced script).
 
 
 ## Tables

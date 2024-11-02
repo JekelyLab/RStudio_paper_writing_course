@@ -1,5 +1,5 @@
 ---
-title: "New paper template"
+title: "Paper or report template"
 subtitle: |
   \raggedright  Author 1^1,2,\*^ , Author 2^1,2^, Author 3^3^, Author 4E^4^ \newline<br>^1^Heidelberg University, Centre for Organismal Studies (COS), 69120 Heidelberg, Germany \newline<br>^2^Affiliation 2 \newline<br>^3^Affiliation 3 \newline<br>^4^Affiliation 4\newline<br>  ^\*^Correspondence: xy@cos.uni-heidelberg.de
 mainfont: Arial
@@ -35,58 +35,54 @@ csl: elife.csl #change according to journal
 
 # Abstract
 
-[This]{.underline} is an R **Markdown** *document.* ^Markdown^ is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+[This]{.underline} is a **Quarto** *document.* Quarto uses a simple ^Markdown^ formatting syntax for authoring HTML, PDF, and MS Word or .odt documents. For more details on using Quarto see <https://quarto.org/>.
 
 Here is our abstract. We discovered that medaka fish can eat Arabidpopsis shoop apical meristeme cells to regulate energy metabolism (data not shown).
-
-Test edit GJ 1.
-
-**text in bold** *italic* [underline]{.underline}
+Here is some **text in bold** *italic* [underline]{.underline} and ^superscript^.
 
 # Introduction
 
-You can add references either by referring to their id in the .bib file e.g., [@Marinkovi2020], or by switching to the visual editor (Cogwheel in the .Rmd menu -\> Use Visual Editor). [@Jokura_2023][@Jokura_2023][@Jacobs2023]
+*Platynereis dumerilii* is a marine annelid... [@ozpolat2021]. It is also the coolest model organism. It lives in shallow sea on seagrass. Ischia is a good sampling location.
 
-It is now a test to edit the text and see how the changes show up on GitHub.
 
-Test of git show. And another test.
+# Results
 
-Test edit GJ 2.
+## Adding references
+
+You can add references either by referring to their id in the .bib file e.g., [@Marinkovi2020], or by switching to the visual editor (Cogwheel in the .Rmd menu -\> Use Visual Editor). [@Jokura_2023; @Jacobs2023]
 
 In the visual editor mode, go to 'Insert' -\> \@ Citation
-
 You can select a Zotero library, PubMed, CrossRef etc. and insert the citations. [@Jacobs2023]
 
-The easiest way is to use the command line:
+One easy and techy way is to use the command line:
 
 ```{bash}
 #| echo: true
 #| eval: false
 
 curl -LH "Accept: application/x-bibtex" https://doi.org/10.7554/eLife.91258.1 >> references.bib
+
+#make sure to use >> and not > otherwise you will overwrite your file!
 ```
 
-*Platynereis dumerilii* is a marine annelid... [@ozpolat2021]. It is also the coolest model organism. It lives in shallow sea on seagrass. Ischia is a good campling location.
+The references are stored in manuscript/references.bib (needs to be defined in the Yaml header). This file will automatically updated when you insert a new reference through the Visual editor \> Insert \> Citations.
 
-The references are stored in manuscript/references.bib (need to be defined in the Yaml header). This file will automatically updated when you insert a new reference through the Visual editor \> Insert \> Citations.
 
-Test edit GJ 3.
-
-[@ozpolat2021][@Wu2020; @Saile2023; @Lohmann2023][@lohmann2001]
+[@ozpolat2021; @Wu2020; @Saile2023; @Lohmann2023; @lohmann2001]
 
 In this documents, references will be formatted in the style of eLife. This is defined in the Yaml header under: csl: elife.csl. The elife.csl file is saved in the /manuscript folder.
 
 
 If you would like to use a different citation format, download the respective .csl file (e.g., from the Zotero style repository <https://www.zotero.org/styles>), save it in the /manuscript folder of the project and change the Yaml to csl: your_favourite_journal.csl.
 
-## Results
 
-Inserting Figures <!--# I don't agree here -->
-Test edit GJ 4.
+Now edit the text, add a few references and press -> Render and see how the changes show up on the rendered document.
+It is easier and faster to render your document to html. You will get a very nice dynamic layout that you can read in the browser (use Firefox). You can also render into pdf, but you need to install a version of latex for that. An easy alternative to generate a nice pdf is to open the html version in a browser (in this case Chrome gives the best results) and print to a pdf file.
 
-Test comment here. <!--# Hi -->
 
-You can add your figures into the rendered document. We saved the figures into /manuscript/figures or /manuscript/figure_supplements and can insert them from there. We use knitr::include_graphics for this. The title and legend can also be edited, as will as the width of the output figure. Test comment behaviour: <!--# Test comment for git show -->
+## Inserting figures
+
+You can add your figures into the rendered document. We saved the figures into /manuscript/figures or /manuscript/figure_supplements and can insert them from there. We use knitr::include_graphics for this. The title and legend can also be edited, as well as the width of the output figure.
 
 ```{r}
 #| echo: false
@@ -107,11 +103,10 @@ knitr::include_graphics("figures/Figure1.png")
 knitr::include_graphics("figures/Figure_complex.png")
 ```
 
-## Equations
+## Adding equations
 
 Equations can also be inserted, Insert -\> Display Math:
 
-Test edit GJ 5.
 
 $$
 \bar{X} = \frac{\sum_{i=1}^{n} x_{i}}{n}
@@ -131,12 +126,20 @@ The mean value of Nanog expression was `r Nanog_mean` indicating that Nanog is d
 
 If we update the data, the script can recalculate the variable we want to refer to in the text and update the number.
 
-## Acknowledgements
 
-We would like to thank the [Jekely lab](https://github.com/JekelyLab) for the [R project template](<https://github.com/JekelyLab/new_paper_template>) we used to write this paper. This work was funded by some funding agency.
-We would like to thank all the Platynereis that gave their lives for science.
+## Inserting comments
 
-## Materials and Methods
+Inserting comments: <!--# I don't agree here -->
+You can also use the visual editor and insert -> comment.
+
+Test comment here. <!--# Hi -->
+
+
+# Acknowledgements
+
+We would like to thank the [Jekely lab](https://github.com/JekelyLab) for the [R project template](<https://github.com/JekelyLab/new_paper_template>) we used to write this paper. This work was funded by xy funding agency.
+
+# Materials and Methods
 
 You can insert tables from source data, such as .csv or Excel files and render them in html with the tinytable package.
 
@@ -188,7 +191,7 @@ This table was generated by tt() as the output of an r chunk in a Quarto doc. Fo
 
 : More complex Grid Table example {tbl-colwidths="\[10,20,20,20,30\]"}
 
-## References
+# References
 
 ```{=html}
 <!--

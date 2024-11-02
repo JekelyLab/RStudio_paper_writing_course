@@ -166,6 +166,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{graphicx}
 \UseTblrLibrary{booktabs}
+\UseTblrLibrary{rotating}
 \UseTblrLibrary{siunitx}
 \NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
 \newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
@@ -220,7 +221,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={New paper template},
+  pdftitle={Paper or report template},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -228,7 +229,7 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
-\title{New paper template}
+\title{Paper or report template}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
@@ -262,48 +263,52 @@ Studies (COS), 69120 Heidelberg, Germany
 \setstretch{1.2}
 \section{Abstract}\label{abstract}
 
-\ul{This} is an R \textbf{Markdown} \emph{document.}
-\textsuperscript{Markdown} is a simple formatting syntax for authoring
-HTML, PDF, and MS Word documents. For more details on using R Markdown
-see \url{http://rmarkdown.rstudio.com}.
+\ul{This} is a \textbf{Quarto} \emph{document.} Quarto uses a simple
+\textsuperscript{Markdown} formatting syntax for authoring HTML, PDF,
+and MS Word or .odt documents. For more details on using Quarto see
+\url{https://quarto.org/}.
 
-\textbf{text in bold} \emph{italic} \ul{underline}
+Here is our abstract. We discovered that medaka fish can eat
+Arabidpopsis shoop apical meristeme cells to regulate energy metabolism
+(data not shown). Here is some \textbf{text in bold} \emph{italic}
+\ul{underline} and \textsuperscript{superscript}.
 
 \section{Introduction}\label{introduction}
 
+\emph{Platynereis dumerilii} is a marine annelid\ldots{} (Ozpolat et
+al., 2021). It is also the coolest model organism. It lives in shallow
+sea on seagrass. Ischia is a good sampling location.
+
+\section{Results}\label{results}
+
+\subsection{Adding references}\label{adding-references}
+
 You can add references either by referring to their id in the .bib file
 e.g., (Marinković et al., 2019), or by switching to the visual editor
-(Cogwheel in the .Rmd menu -\textgreater{} Use Visual Editor). {[}Jokura
-et al. (2023){]}(Jokura et al., 2023)(Jacobs and Ryu, 2023)
+(Cogwheel in the .Rmd menu -\textgreater{} Use Visual Editor). (Jacobs
+and Ryu, 2023; Jokura et al., 2023)
 
-It is now a test to edit the text and see how the changes show up on
-GitHub.
-
-Test of git show.
-
-In the visual editor mode, go to `Insert' -\textgreater{} @ Citation
-
-You can select a Zotero library, PubMed, CrossRef etc. and insert the
+In the visual editor mode, go to `Insert' -\textgreater{} @ Citation You
+can select a Zotero library, PubMed, CrossRef etc. and insert the
 citations. (Jacobs and Ryu, 2023)
 
-The easiest way is to use the command line:
+One easy and techy way is to use the command line:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{curl} \AttributeTok{{-}LH} \StringTok{"Accept: application/x{-}bibtex"}\NormalTok{ https://doi.org/10.7554/eLife.91258.1 }\OperatorTok{\textgreater{}\textgreater{}}\NormalTok{ references.bib}
+
+\CommentTok{\#make sure to use \textgreater{}\textgreater{} and not \textgreater{} otherwise you will overwrite your file!}
 \end{Highlighting}
 \end{Shaded}
-
-\emph{Platynereis dumerilii} is a marine annelid\ldots{} (Ozpolat et
-al., 2021)
 
 The references are stored in manuscript/references.bib (need to be
 defined in the Yaml header). This file will automatically updated when
 you insert a new reference through the Visual editor \textgreater{}
 Insert \textgreater{} Citations.
 
-{[}Ozpolat et al. (2021){]}(Lohmann et al., 2023; Saile et al., 2023; Wu
-et al., 2020)(Lohmann et al., 2001)
+(Lohmann et al., 2023; Lohmann et al., 2001; Ozpolat et al., 2021; Saile
+et al., 2023; Wu et al., 2020)
 
 In this documents, references will be formatted in the style of eLife.
 This is defined in the Yaml header under: csl: elife.csl. The elife.csl
@@ -314,11 +319,16 @@ respective .csl file (e.g., from the Zotero style repository
 \url{https://www.zotero.org/styles}), save it in the /manuscript folder
 of the project and change the Yaml to csl: your\_favourite\_journal.csl.
 
-\subsection{Results}\label{results}
+Now edit the text, add a few references and press -\textgreater{} Render
+and see how the changes show up on the rendered document. It is easier
+and faster to render your document to html. You will get a very nice
+dynamic layout that you can read in the browser (use Firefox). You can
+also render into pdf, but you need to install a version of latex for
+that. An easy alternative to generate a nice pdf is to open the html
+version in a browser (in this case Chrome gives the best results) and
+print to a pdf file.
 
-Inserting Figures
-
-Test comment here.
+\subsection{Inserting figures}\label{inserting-figures}
 
 You can add your figures into the rendered document. We saved the
 figures into /manuscript/figures or /manuscript/figure\_supplements and
@@ -348,7 +358,7 @@ picture. (B) legend. (C) (D)}
 
 \end{figure}%
 
-\subsection{Equations}\label{equations}
+\subsection{Adding equations}\label{adding-equations}
 
 Equations can also be inserted, Insert -\textgreater{} Display Math:
 
@@ -371,13 +381,21 @@ max\_PRC value is 21 (now this number comes from our sourced script).
 If we update the data, the script can recalculate the variable we want
 to refer to in the text and update the number.
 
-\subsection{Acknowledgements}\label{acknowledgements}
+\subsection{Inserting comments}\label{inserting-comments}
 
-We would like to thank the Jekely lab for the R project template
-(\url{https://github.com/JekelyLab/new_paper_template}) we used to write
-this paper. This work was funded by \ldots{}
+Inserting comments: You can also use the visual editor and insert
+-\textgreater{} comment.
 
-\subsection{Materials and Methods}\label{materials-and-methods}
+Test comment here.
+
+\section{Acknowledgements}\label{acknowledgements}
+
+We would like to thank the \href{https://github.com/JekelyLab}{Jekely
+lab} for the \href{https://github.com/JekelyLab/new_paper_template}{R
+project template} we used to write this paper. This work was funded by
+xy funding agency.
+
+\section{Materials and Methods}\label{materials-and-methods}
 
 You can insert tables from source data, such as .csv or Excel files and
 render them in html with the tinytable package.
@@ -458,6 +476,7 @@ Col5
 \endlastfoot
 a & b & c & d & e \\
 d & & & & \\
+v & n & f & & f \\
 \end{longtable}
 
 \subsection{Complex grid table
@@ -527,7 +546,7 @@ genetic reagent (restriction enzyme) & Afl2 restriction enzyme & New
 England Biolabs & R0520L & NA \\
 \end{longtable}
 
-\subsection{References}\label{references}
+\section{References}\label{references}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}

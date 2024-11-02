@@ -1,13 +1,7 @@
 # RStudio paper writing course - excercises
 # Gaspar Jekely, 2024
 
-# sourcing, installing and loading packages -------------------------------
-
-# installing packages
-install.packages("tidyverse")
-
-# source multiple packages from one file
-source("analysis/scripts/packages_and_functions.R")
+# working directory, sourcing, installing and loading packages -------------------------------
 
 #check your working dir (should be the .rproject dir)
 getwd()
@@ -24,12 +18,18 @@ setwd(here::here())
 getwd()
 # all good again
 
+#listing files in your working directory
 list.files()
+
+# installing packages
+install.packages("tidyverse")
 
 #loading packages
 library(tidyverse)
 library(png)
 
+# source multiple packages from one file
+source("analysis/scripts/packages_and_functions.R")
 
 # share session info ------------------------------------------------------
 
@@ -44,13 +44,6 @@ data_Jose <- readxl::read_excel("analysis/data/data - José - March 2024.xlsx")
 # alternatively, use the rio package with import() to automatically recognise format and import
 data_Jose <- rio::import("analysis/data/data - José - March 2024.xlsx")
 
-View(data_Jose)
-head(data_Jose)
-glimpse(data_Jose)
-str(data_Jose)
-summary(data_Jose)
-data_Jose
-
 
 # rio: A Swiss-Army Knife for Data I/O  -----------------------------------
 
@@ -61,8 +54,22 @@ export(data_Jose, "analysis/data/data_Jose_March2024.csv.zip")
 
 #convert file formats
 rio::convert("analysis/data/data - José - March 2024.xlsx",
-"analysis/data/data_Jose_March2024.csv")
+             "analysis/data/data_Jose_March2024.csv")
 
+
+# preview data ------------------------------
+
+View(data_Jose)
+head(data_Jose)
+glimpse(data_Jose)
+str(data_Jose)
+summary(data_Jose)
+data_Jose
+
+# check your workspace settings, do not save workspace -------------
+
+# go in the menu to Tools -> Global options 
+#untick Restore .Rdata into workspace at startup
 
 # another data file -------------------------------------------------------
 
@@ -78,8 +85,18 @@ summary(data_Ashwini)
 
 # a tidy dataset ----------------------------------------------------------
 
+# Tidy data - definitions
+# from https://r4ds.hadley.nz/data-visualize
+
+
 head(iris)
+
+#read more about tibbles
 vignette("tibble")
+
+#creating a tibble
+tibble(alphabet = letters, ALPHABET = LETTERS, x = 1:26, y = x ^ 2)
+
 
 # overwrite gene names ----------------------------------------------------
 
@@ -125,12 +142,12 @@ data_Syn_clean <- data_Syn  %>%
 
 tb_syn <- data_Syn_clean |>
   pivot_longer(matches("aSyn"), 
-               names_to = c("chemistry", "sample"), 
+               names_to = c("condition", "sample"), 
                names_sep = "_",
                values_to = "fluorescence")
 
 plot_syn <- tb_syn %>%
-  ggplot(aes(x = Time, y = fluorescence, color = chemistry)) +
+  ggplot(aes(x = Time, y = fluorescence, color = condition)) +
   geom_smooth(
     method = 'loess', span = 0.1
     ) +
@@ -209,7 +226,7 @@ plot_Ashwini_ct
 # Plot the Synuclein data ----------
 tb_syn
 plot_syn <- tb_syn %>%
-  ggplot(aes(x = Time, y = fluorescence, color = fluorescence)) +
+  ggplot(aes(x = Time, y = fluorescence, color = condition)) +
   geom_smooth(method = 'loess') +
   theme_minimal()
 plot_syn
@@ -241,6 +258,7 @@ write_csv2(data_Ashwini_sel_M_SD, "manuscript/source_data/FigureX_Ashwini_source
 read_csv2("manuscript/source_data/FigureX_Ashwini_source_data1.csv")
 
 # Format plots with predefined complete ggplot2 themes ------------
+
 plot_Jose1
 plot_Jose1 +
   theme_dark()
@@ -395,7 +413,7 @@ panel_INNOS <- ggdraw() +
                arrow = arrow(ends = "both", type = "closed", length = unit(0.1,"cm")),
                lineend = "butt",
                linejoin = "mitre",
-               arrow.fill = "black", size = 0.2)
+               arrow.fill = "black", linewidth = 0.2)
 
 #define layout
 layout <- "AB"
@@ -424,7 +442,29 @@ ggsave(
 image_read("manuscript/figures/Figure_IHC.png")
 
 
-# read tif files ------------------
+
+# Adding consistent scale bars -----------------
+
+#read images and make annotated panel
+panel_NOS2d_HCR <- ggdraw() + draw_image(readPNG("analysis/pictures/HCR-IHC_51_AP_NOS_actub_56um.png")) +
+  draw_label("in situ HCR hybridisation", x = 0.5, y = 0.99, size = 10) +
+  draw_label("NOS", x = 0.12, y = 0.9, color="magenta", size = 11, fontface="italic") +
+  draw_label("acTub", x = 0.36, y = 0.9, color="green", size = 11, fontface="plain") +
+  draw_line(x = c(0.1, 0.46), y = c(0.08, 0.08), color = "white", size = 0.5) +
+  draw_label(expression(paste("20 ", mu,"m")), x = 0.28, y = 0.11, color = "white", size = 8) 
+  
+panel_NIT_HCR <- ggdraw() + draw_image(readPNG("analysis/pictures/HCR_72_AP_NIT_94um.png")) +
+  draw_label("transgene + IHC", x = 0.5, y = 0.99, size = 10) +
+  draw_label("NOSp::palmi-3xHA", x = 0.34, y = 0.9, color="magenta", size = 10, fontface="plain") +
+  draw_label("acTubtub", x = 0.7, y = 0.9, color="green", size = 10, fontface="plain", hjust = 1) +
+  draw_label("testtest", x = 0.71, y = 0.9, color="green", size = 10, fontface="plain", hjust = 0) +
+  draw_label("acTubtub2", x = 0.7, y = 0.8, color="red", size = 10, fontface="plain", hjust = 1) +
+  draw_label("testtest2", x = 0.71, y = 0.8, color="red", size = 10, fontface="plain", hjust = 0) +
+  draw_line(x = c(0.1, 0.31), y = c(0.08, 0.08), color = "white", size = 0.5) 
+panel_NIT_HCR
+
+
+# read tif file, parsing metadata like image scale ------------------
 
 img_tif <- magick::image_read("analysis/pictures/INNOS_synapses.tif")
 img_tif
@@ -451,27 +491,7 @@ ggsave(
   units = c("px"), Figure_INNOS_with_tif, 
   width = 3000, height = 1000,
   bg = "white"
-  )
-
-# Adding consistent scale bars -----------------
-
-#read images and make annotated panel
-panel_NOS2d_HCR <- ggdraw() + draw_image(readPNG("analysis/pictures/HCR-IHC_51_AP_NOS_actub_56um.png")) +
-  draw_label("in situ HCR hybridisation", x = 0.5, y = 0.99, size = 10) +
-  draw_label("NOS", x = 0.12, y = 0.9, color="magenta", size = 11, fontface="italic") +
-  draw_label("acTub", x = 0.36, y = 0.9, color="green", size = 11, fontface="plain") +
-  draw_line(x = c(0.1, 0.46), y = c(0.08, 0.08), color = "white", size = 0.5) +
-  draw_label(expression(paste("20 ", mu,"m")), x = 0.28, y = 0.11, color = "white", size = 8) 
-  
-panel_NIT_HCR <- ggdraw() + draw_image(readPNG("analysis/pictures/HCR_72_AP_NIT_94um.png")) +
-  draw_label("transgene + IHC", x = 0.5, y = 0.99, size = 10) +
-  draw_label("NOSp::palmi-3xHA", x = 0.34, y = 0.9, color="magenta", size = 10, fontface="plain") +
-  draw_label("acTubtub", x = 0.7, y = 0.9, color="green", size = 10, fontface="plain", hjust = 1) +
-  draw_label("testtest", x = 0.71, y = 0.9, color="green", size = 10, fontface="plain", hjust = 0) +
-  draw_label("acTubtub2", x = 0.7, y = 0.8, color="red", size = 10, fontface="plain", hjust = 1) +
-  draw_label("testtest2", x = 0.71, y = 0.8, color="red", size = 10, fontface="plain", hjust = 0) +
-  draw_line(x = c(0.1, 0.31), y = c(0.08, 0.08), color = "white", size = 0.5) 
-panel_NIT_HCR
+)
 
 # introduce gaps in layout --------------
 
@@ -585,22 +605,9 @@ image_read("manuscript/figures/Figure_complex.png")
 
 # Image saved with defined resolution (dpi) -------------------------------
 
-
 #save figure as png at 300 dpi
 ggsave(
   "manuscript/figures/Figure_complex_300dpi.png",
   units = c("cm"), Figure_complex, 
   width = 22, height = 13, dpi = 600, bg = "white"
   )
-
-# Statistical comparisons -------------
-
-
-data_Jose %>%
-  ggplot(aes(x = genotype, y = length, fill = factor(Treatment, level=c('Control', 'ABA', 'Sulfate')), na.rm = TRUE)) +
-  geom_violin() +
-  geom_point( position=position_jitterdodge(jitter.width = 0.3, dodge.width = 0.9), alpha = 0.5, size = 0.4) +
-  scale_fill_manual(values = c("#D55E00", "#E69F00", "#aaaaaa", "#dddddd")) +
-  guides(fill = guide_legend(title = "Treatment")) +
-  coord_flip() +
-  scale_y_log10()
