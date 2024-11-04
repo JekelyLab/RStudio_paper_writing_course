@@ -4,7 +4,7 @@ author: "Gáspár Jékely <br> Centre for Organismal Studies, Heidelberg Univers
 format:
   revealjs: 
     theme: [default, custom.scss]
-    slide-number: false
+    slide-number: true
     code-fold: false
     code-summary: "Code"
     chalkboard: 
@@ -63,7 +63,7 @@ https://rstudio-education.github.io/tidyverse-cookbook/
 
 ![](images/Data_publication_Pyramide.png){height=450}
 
-## Most scientists use software developed for accounting
+## Most scientists use software developed for accounting {transition="fade" transition-speed="fast"}
 
 ![](images/Scientists_rename_genes.png)
 [theverge.com](https://www.theverge.com/2020/8/6/21355674/human-genes-rename-microsoft-excel-misreading-dates)
