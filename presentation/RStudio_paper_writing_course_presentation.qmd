@@ -1249,16 +1249,17 @@ tt(
 ```
 
 
-## Part 6 - Collaborative code and paper writing with Rstudio and GitHub
+## Part 6 - Collaborative code and paper writing with Rstudio and git
 
 <br>
 
--   GitHub www.github.com is a platform for software development and version control
--   owned by Microsoft since 2018
--   developers can have public and private repositories
--   can share repositories privately with collaborators
--   integrates well with Rstudio
--   uses git protocol that is open source and also used by other code-hosting sites
+-   git is an open source program and protocol for version control
+- several online platforms were built to make code sharing with git easier
+- GitHub www.github.com is one such platform
+- GitHub is owned by Microsoft since 2018
+- developers can have public and private repositories
+- can share repositories privately with collaborators
+- integrates well with Rstudio
 
 
 ## The workflow

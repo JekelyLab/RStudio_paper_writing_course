@@ -1,0 +1,42 @@
+---
+title: "R course report - group 1"
+author: "name1, name2, name3"
+format: html
+---
+
+## Quarto
+### Heading 2
+#### Heading 3
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+print('hi, this is an R command executed')
+```
+
+```{bash}
+echo hi
+```
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this 
+
+```{r}
+#| echo: false
+#| eval: true
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+
+## Next section
+
+

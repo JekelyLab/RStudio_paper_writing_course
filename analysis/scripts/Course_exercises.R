@@ -40,10 +40,10 @@ writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
 # load data ---------------------------------------------------------------
 
 data_Jose <- readxl::read_excel("analysis/data/data - José - March 2024.xlsx")
-
+data_Jose
 # alternatively, use the rio package with import() to automatically recognise format and import
 data_Jose <- rio::import("analysis/data/data - José - March 2024.xlsx")
-
+data_Jose
 
 # rio: A Swiss-Army Knife for Data I/O  -----------------------------------
 
@@ -141,19 +141,23 @@ data_Syn_clean <- data_Syn  %>%
   rename_with(~ gsub("...", "_", .x, fixed = TRUE))
 
 tb_syn <- data_Syn_clean |>
-  pivot_longer(matches("aSyn"), 
-               names_to = c("condition", "sample"), 
-               names_sep = "_",
-               values_to = "fluorescence")
+  pivot_longer(
+    matches("aSyn"), 
+    names_to = c("condition", "sample"), 
+    names_sep = "_",
+    values_to = "fluorescence"
+    )
 
 plot_syn <- tb_syn %>%
   ggplot(aes(x = Time, y = fluorescence, color = condition)) +
   geom_smooth(
     method = 'loess', span = 0.1
     ) +
-  theme_minimal()
-plot_syn
+  theme_minimal()  +
+  facet_wrap(~condition)
 
+plot_syn
+theme()
 plot_syn +
   annotate("segment", x = 20, xend = 50, y = 1, yend = 1, linewidth = 1)+
   annotate("text", x = 34, y = 300, label = "30 sec", size = 3)
@@ -163,9 +167,10 @@ plot_syn +
 head(iris)
 iris
 iris %>%
-  ggplot(aes(x = Petal.Length, y = Sepal.Width, color = Species)) +
+  ggplot(aes(x = Petal.Length, y = Sepal.Width, fill = Species)) +
   geom_boxplot(notch = TRUE) +
-  theme_minimal()
+  theme_minimal() +
+  guides(fill = guide_legend(title = "genus")) 
 
 iris %>%
   ggplot(aes(x = Petal.Length)) +
@@ -176,7 +181,7 @@ iris %>%
     x = Petal.Length, y = Sepal.Width, 
     color = Species, size = Sepal.Width, shape = Species) 
     ) +
-  geom_point(alpha = 0.5) +
+  geom_point(alpha = 0.7) +
   facet_wrap(~Species)
 
 
@@ -187,7 +192,7 @@ plot_Jose1 <- data_Jose %>%
   geom_boxplot() +
   theme_minimal() +
   scale_fill_manual(values = c("#D55E00", "#E69F00", "#cccccc")) +
-  guides(fill = guide_legend(title = "Treatment")) 
+  guides(fill = guide_legend(title = "Treatment"))  
 #  coord_flip() +
 #  scale_y_log10()
 
@@ -197,16 +202,16 @@ plot_Jose2 <- data_Jose %>%
   ggplot(aes(x = genotype, y = length, fill = factor(Treatment, level=c('Control', 'ABA', 'Sulfate')), na.rm = TRUE)) +
   geom_violin() +
   geom_point( position=position_jitterdodge(jitter.width = 0.3, dodge.width = 0.9), alpha = 0.5, size = 0.4) +
-  scale_fill_manual(values = c("#D55E00", "#E69F00", "#aaaaaa", "#dddddd")) +
+  scale_fill_manual(values = c(Okabe_Ito[1], Okabe_Ito[2], "#aaaaaa", "#dddddd")) +
   guides(fill = guide_legend(title = "Treatment")) +
   scale_y_log10()
+  
 plot_Jose2
 
 
 # Plot data - Ashwini ----------------------
 
 data_Ashwini_sel_M_SD %>%
-  group_by(gene) %>%
   ggplot(aes(x = days, y = dt_ct, fill = gene )) +
   geom_boxplot()
 
@@ -277,14 +282,14 @@ plot_Jose2 +
 
 # Format plots with a common custom theme() -------------
 
-args(theme)
+args(theme) #will list all the arguments of theme()
 
-theme_plots <- theme_minimal() +
+theme_plots <- theme_cowplot() +
   theme(
     axis.title.x = element_text(size = 14),
     axis.title.y = element_text(size = 12),
     axis.text = element_text(size = 10),
-    legend.text = element_text(size = 10),
+    legend.text = element_text(size = 10), #size of legend
     legend.title = element_text(size = 12),
     legend.key.size = unit(7, "mm"),
     legend.title.position = "top",
@@ -298,11 +303,12 @@ plot_Ashwini_ct
 
 plot_Jose1 <- plot_Jose1 +
   theme_plots +
-  theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5))
 plot_Jose1
 
 plot_Jose2 <- plot_Jose2 +
-  theme_plots
+  theme_plots +
+  theme(axis.text.x = element_text(angle = 0, vjust = 0.5))
 plot_Jose2
 
 plot_syn <- plot_syn +
@@ -311,6 +317,7 @@ plot_syn
 
 # Optional - save plots as png---------------
 
+#save the picture
 ggsave( "analysis/pictures/plot_Jose1a.png",
   limitsize = FALSE,
   units = c("px"), plot_Jose1,
@@ -327,8 +334,8 @@ ggsave( "analysis/pictures/plot_Jose1b.png",
 # save in a different size
 ggsave( "analysis/pictures/plot_Jose1b.pdf",
   limitsize = FALSE,
-  units = c("px"), plot_Jose1,
-  width = 2400, height = 2000
+  units = c("px"), plot_Jose1, 
+  width = 2400, height = 2000  #here we define fig width
   )
 
 ggsave(
@@ -340,6 +347,7 @@ ggsave(
 # Assemble figure with cowplot and patchwork --------------
 
 #read images
+#comments
 
 img1 <- readPNG("analysis/pictures/plot_Jose1a.png")
 img2 <- readPNG("analysis/pictures/plot_Jose1b.png")
@@ -350,31 +358,28 @@ panel_JoseB <- ggdraw() + draw_image(img2)
 
 #define layout with textual representation
 layout <- "
-A#B
-###
-C#D"
+AAAAAAAABBBBBBBBBBBBBB
+CCCCCCCCCCCDDDDDDDDDDD
+"
 
 #assemble multipanel figure based on layout
-Figure_Jose <- panel_JoseA + panel_JoseB + plot_Jose1 + plot_Jose2 +
-  plot_layout(design = layout, heights = c(1, 0.05, 1), widths = c(1, 0.05, 1)) +
-  plot_annotation(tag_levels = 'A') & 
+Figure_Jose <- panel_JoseA +
+  panel_JoseB +
+  plot_Jose1 + plot_Jose2 +
+  plot_layout(design = layout) +
+  plot_annotation(tag_levels = list(c('A', 'B', '', '', '', 'C', 'D'))) & 
   theme(plot.tag = element_text(size = 12, face='plain'))
-
-#assemble multipanel figure based on layout
-Figure_Jose <- plot_Jose1 + plot_Jose2 + plot_Ashwini_ct + plot_syn +
-  plot_layout(design = layout, heights = c(1, 0.05, 1), widths = c(1, 0.05, 1)) +
-  plot_annotation(tag_levels = 'A') & 
-  theme(plot.tag = element_text(size = 12, face='plain'))
-
 
 #save figure as png and pdf
 ggsave(
   "manuscript/figures/Figure_Jose.png", limitsize = FALSE, 
-  units = c("px"), Figure_Jose, width = 4500, height = 2500,
+  units = c("px"), Figure_Jose, width = 4000, height = 2500,
   bg = "white"
   )
 
-ggsave(
+
+
+ ggsave(
   "manuscript/figures/Figure_Jose.pdf", limitsize = FALSE, 
   units = c("px"), Figure_Jose, width = 4000, height = 1600
   )
@@ -396,10 +401,9 @@ plot_Jose1 +
 #read images
 img_INNOS <- magick::image_read("analysis/pictures/INNOS_synapses.png")
 
-#define arrow endpoints 
-arrow <- data.frame(x1 = 0.95, x2 = 0.95, y1 = 0.8, y2 = 0.9)
 
 ## add text labels ------------
+
 panel_INNOS <- ggdraw() + 
   draw_image(img_INNOS) +
   draw_label("INNOS", x = 0.5, y = 0.99, size = 10) +
@@ -409,12 +413,9 @@ panel_INNOS <- ggdraw() +
   draw_label("D", x = 0.95, y = 0.93, size = 6) +
   draw_label("V", x = 0.95, y = 0.77, size = 6) +
   draw_label("*", x = 0.5, y = 0.29, color='black',size = 18,fontface='plain') +
-  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), data = arrow, 
-               arrow = arrow(ends = "both", type = "closed", length = unit(0.1,"cm")),
-               lineend = "butt",
-               linejoin = "mitre",
-               arrow.fill = "black", linewidth = 0.2)
+  arrow
 
+panel_INNOS
 #define layout
 layout <- "AB"
 
@@ -452,7 +453,8 @@ panel_NOS2d_HCR <- ggdraw() + draw_image(readPNG("analysis/pictures/HCR-IHC_51_A
   draw_label("acTub", x = 0.36, y = 0.9, color="green", size = 11, fontface="plain") +
   draw_line(x = c(0.1, 0.46), y = c(0.08, 0.08), color = "white", size = 0.5) +
   draw_label(expression(paste("20 ", mu,"m")), x = 0.28, y = 0.11, color = "white", size = 8) 
-  
+panel_NOS2d_HCR  
+
 panel_NIT_HCR <- ggdraw() + draw_image(readPNG("analysis/pictures/HCR_72_AP_NIT_94um.png")) +
   draw_label("transgene + IHC", x = 0.5, y = 0.99, size = 10) +
   draw_label("NOSp::palmi-3xHA", x = 0.34, y = 0.9, color="magenta", size = 10, fontface="plain") +
@@ -468,6 +470,7 @@ panel_NIT_HCR
 
 img_tif <- magick::image_read("analysis/pictures/INNOS_synapses.tif")
 img_tif
+image_info(img_tif)
 img_scale <- image_info(img_tif)$width/as.numeric(str_split(image_info(img_tif)$density, "x")[[1]][1])
 
 img_scale #not precise
@@ -475,6 +478,7 @@ img_scale #not precise
 # alternatively use ijtiff
 library(ijtiff)
 img_tif_ij <- ijtiff::read_tags("analysis/pictures/INNOS_synapses.tif")
+img_tif_ij
 img_scale <- img_tif_ij$frame1$width/img_tif_ij$frame1$x_resolution
 img_scale
 
@@ -515,7 +519,7 @@ ggsave(
   units = c("px"), Figure_scalebars, 
   width = 1700, height = 940
   )
-image_read("manuscript/figures/Figure_scalebars.png")
+image_read("manuscript/figures/Figure_scalebars.pdf")
 
 # Fine-tuning figure size and gaps ----------------
 
@@ -545,11 +549,13 @@ ggsave(
 image_read("manuscript/figures/Figure_scalebars_no_gap.png")
 
 #introduce gap in layout
-layout2 <- "A#B"
+layout2 <- "
+A#B
+"
 
 #assemble multipanel figure based on layout
 Figure_scalebars <- panel_NOS2d_HCR + panel_NIT_HCR +
-  plot_layout(design = layout2, widths = c(1, 0.03, 1)) +
+  plot_layout(design = layout2, widths = c(1, 0.01, 1)) +
   plot_annotation(tag_levels = list(c('A','','B',''))) & 
   theme(plot.tag = element_text(size = 12, face='plain'))
 
@@ -563,6 +569,36 @@ ggsave(
   )
 
 image_read("manuscript/figures/Figure_scalebars_gap.png")
+
+# iris three coloured histograms on top ------------------------
+View(iris)
+
+iris_histogram <- iris %>%
+  ggplot() +
+  geom_histogram(
+    data = iris %>% filter(Species == "setosa"),
+    aes(Sepal.Length),
+    fill = "#E69F00", alpha = 1, bins = 54,
+    color = "grey", linewidth = 0.1
+  ) +
+  geom_histogram(
+    data = iris %>% filter(Species == "versicolor"),
+    aes(Sepal.Length),
+    fill = "#CC79A7", alpha = 0.5, bins = 52,
+    color = "grey", linewidth = 0.1
+  )  +
+  geom_histogram(
+    data = iris %>% filter(Species == "virginica"),
+    aes(Sepal.Length),
+    fill = "#0072B2", alpha = 0.6, bins = 50,
+    color = "grey", linewidth = 0.1
+  ) +
+  labs(x = "sepal length", y = "# of plants", title = " ") +
+  scale_x_log10(breaks = c(1, 2, 5, 10, 25, 80)) +
+  theme_minimal_hgrid() +
+  theme_plots
+iris_histogram
+
 
 # More complex figure layouts --------------
 
@@ -578,18 +614,20 @@ panel_model <- ggdraw() + draw_image(readPNG("analysis/pictures/Magnitude_model_
 
 #introduce gap in layout
 layout <- "
-AAAABBBBCCC#
-AAAABBBBDDD#
-############
-EEEFFFGGGHHH
+A#B#C#D#E#F#G#h#H
+#################
+IIIIIIII#JJJJJJJJ
 "
 
 #assemble multipanel figure based on layout
-Figure_complex <- panel_Platy + panel_FVRI +  panel_NOS + 
-  panel_NIT +
-  panel_INNOS + panel_Jose + panel_DAF +
-  panel_model +
-  plot_layout(design = layout, heights = c(1, 1, 0.05, 2)) +
+Figure_complex <- panel_NIT + panel_NIT +  panel_NIT +
+  panel_NIT + panel_NIT + panel_NIT +
+  panel_NIT + panel_NIT + panel_NIT +
+  plot_Jose1 + iris_histogram +
+  plot_layout(
+    design = layout, 
+    heights = c(0.7, 0.05, 1),
+    widths = c(1, 0.02, 1, 0.02, 1, 0.02, 1, 0.02, 1, 0.02, 1, 0.02, 1)) +
   plot_annotation(tag_levels = 'a') & 
   theme(plot.tag = element_text(size = 12, face='plain'))
 
@@ -597,10 +635,8 @@ Figure_complex <- panel_Platy + panel_FVRI +  panel_NOS +
 ggsave(
   "manuscript/figures/Figure_complex.png",
   units = c("px"), Figure_complex, 
-  width = 2600, height = 1700, bg = "white"
+  width = 3500, height = 2000, bg = "white"
   )
-
-image_read("manuscript/figures/Figure_complex.png")
 
 
 # Image saved with defined resolution (dpi) -------------------------------
@@ -611,3 +647,4 @@ ggsave(
   units = c("cm"), Figure_complex, 
   width = 22, height = 13, dpi = 600, bg = "white"
   )
+
